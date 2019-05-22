@@ -1,3 +1,5 @@
+#InstallKeybdHook
+#KeyHistory
 #MaxHotkeysPerInterval, 10000
 
 BASE_SPEED = 1
@@ -207,22 +209,28 @@ $k::
 
 $d::
 {
-  canMoveMouse = true
-  KeyWait, d, T0.2
-  if (ErrorLevel) ; if hel for 500ms then start spamming  btn
-  {
-    if (isMovingMouse = "false")
+  if (A_PriorKey = "f") and (A_TimeSincePriorHotkey < 200) {
+    Send {BackSpace}
+    canMoveMouse = true
+    KeyWait, d, T0.5
+    if (ErrorLevel) ; if held for 500ms then start spamming  btn
     {
-      canMoveMouse = false
-      While GetKeyState("d", "P")
+      if (isMovingMouse = "false")
       {
-        Send d
-        Sleep, 20
+        canMoveMouse = false
+        While GetKeyState("d", "P")
+        {
+          Send d
+          Sleep, 20
+        }
       }
     }
+  } else {
+    Send d
   }
   Return
 }
+
 
 
 $d Up::
@@ -230,4 +238,3 @@ $d Up::
   isMovingMouse = false
   canMoveMouse = false
 }
-
