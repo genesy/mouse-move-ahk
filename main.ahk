@@ -209,22 +209,10 @@ $k::
 
 $d::
 {
-  if (A_PriorKey = "f") and (A_TimeSincePriorHotkey < 200) {
+  if (A_PriorKey = "f") and (A_TimeSincePriorHotkey < 80) {
     Send {BackSpace}
     canMoveMouse = true
-    KeyWait, d, T0.5
-    if (ErrorLevel) ; if held for 500ms then start spamming  btn
-    {
-      if (isMovingMouse = "false")
-      {
-        canMoveMouse = false
-        While GetKeyState("d", "P")
-        {
-          Send d
-          Sleep, 20
-        }
-      }
-    }
+    KeyWait, d
   } else {
     Send d
   }
