@@ -3,15 +3,112 @@
 BASE_SPEED = 1
 BASE_SPEED_MULTIPLIER = 10
 isMovingMouse = false
+canMoveMouse = false
+
+
+$s::
+{
+  if (canMoveMouse = "true")
+  {
+    BASE_SPEED = 0.5
+    BASE_SPEED_MULTIPLIER = 20
+  }
+  else
+  {
+    Send s
+  }
+  Return
+}
+
+$g::
+{
+  if (canMoveMouse = "true")
+  {
+    Click, down, middle
+  }
+  else
+  {
+    Send g
+  }
+  Return
+}
+$g Up::
+{
+  if (canMoveMouse = "true")
+  {
+    Click, up, middle
+  }
+  Return
+}
+
+$f::
+{
+  if (canMoveMouse = "true")
+  {
+    Click down
+  }
+  else
+  {
+    Send f
+  }
+  Return
+}
+$f Up::
+{
+  if (GetKeyState("d", "P"))
+  {
+    Click up
+  }
+  Return
+}
+
+$v::
+{
+  if (GetKeyState("d", "P"))
+  {
+    Click, down, right
+  }
+  else
+  {
+    Send v
+  }
+  Return
+}
+$v Up::
+{
+  if (GetKeyState("d", "P"))
+  {
+    Click, up, right
+  }
+  Return
+}
+
+$s Up::
+{
+  BASE_SPEED = 1
+  BASE_SPEED_MULTIPLIER = 10
+  Return
+}
 
 $h::
 {
-  if (GetKeyState("d", "P"))
+  if (canMoveMouse = "true")
   {
     isMovingMouse = true
     While GetKeyState("h", "P")
     {
-      MouseMove, -%BASE_SPEED_MULTIPLIER%, 0, %BASE_SPEED%, R
+      if (GetKeyState("j", "P"))
+      {
+        MouseMove, -%BASE_SPEED_MULTIPLIER%, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
+      }
+      else if (GetKeyState("k", "P"))
+      {
+        MouseMove, -%BASE_SPEED_MULTIPLIER%, -%BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
+      }
+      else
+      {
+        MouseMove, -%BASE_SPEED_MULTIPLIER%, 0, %BASE_SPEED%, R
+      }
     }
   }
   else {
@@ -23,12 +120,23 @@ $h::
 $l::
 {
 
-  if (GetKeyState("d", "P"))
+  if (canMoveMouse = "true")
   {
     isMovingMouse = true
     While GetKeyState("l", "P")
     {
-      MouseMove, %BASE_SPEED_MULTIPLIER%, 0, %BASE_SPEED%, R
+      if (GetKeyState("j", "P"))
+      {
+        MouseMove, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
+      }
+      else if (GetKeyState("k", "P"))
+      {
+        MouseMove, %BASE_SPEED_MULTIPLIER%, -%BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
+      }
+      else
+      {
+        MouseMove, %BASE_SPEED_MULTIPLIER%, 0, %BASE_SPEED%, R
+      }
     }
   }
   else {
@@ -41,22 +149,23 @@ $l::
 $j::
 {
 
-  if (GetKeyState("d", "P"))
+  ; if (GetKeyState("d", "P"))
+  if (canMoveMouse = "true")
   {
     isMovingMouse = true
     While GetKeyState("j", "P")
     {
       if (GetKeyState("h", "P"))
       {
-        MouseMove, -%BASE_SPEED_MULTIPLIER%, -%BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
+        MouseMove, -%BASE_SPEED_MULTIPLIER%, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
       }
       else if (GetKeyState("l", "P"))
       {
-        MouseMove, %BASE_SPEED_MULTIPLIER%, -%BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
+        MouseMove, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
       }
       else
       {
-        MouseMove, 0, -%BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
+        MouseMove, 0, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
       }
     }
   }
@@ -70,9 +179,9 @@ $j::
 ; UP
 $k::
 {
-  if (GetKeyState("d", "P"))
+  if (canMoveMouse = "true")
   {
-    isMovingMouse = trued
+    isMovingMouse = true
     While GetKeyState("k", "P")
     {
       if (GetKeyState("h", "P"))
@@ -98,24 +207,27 @@ $k::
 
 $d::
 {
+  canMoveMouse = true
   KeyWait, d, T0.2
-  if (ErrorLevel)
+  if (ErrorLevel) ; if hel for 500ms then start spamming  btn
   {
     if (isMovingMouse = "false")
     {
+      canMoveMouse = false
       While GetKeyState("d", "P")
       {
         Send d
-        Sleep, 10
+        Sleep, 20
       }
     }
-    else
-    {
-      isMovingMouse = false
-    }
-  }
-  else {
-    Send d
   }
   Return
 }
+
+
+$d Up::
+{
+  isMovingMouse = false
+  canMoveMouse = false
+}
+
