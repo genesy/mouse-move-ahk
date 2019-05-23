@@ -1,23 +1,45 @@
-#InstallKeybdHook
 #KeyHistory
 #MaxHotkeysPerInterval, 10000
 
+DEFAULT_SPEED = 1
+DEFAULT_SPEED_MULTIPLIER = 10
+
 BASE_SPEED = 1
 BASE_SPEED_MULTIPLIER = 10
+
 isMovingMouse = false
 canMoveMouse = false
 
-
+; speed multiplier
 $s::
 {
   if (canMoveMouse = "true")
   {
-    BASE_SPEED = 0.5
-    BASE_SPEED_MULTIPLIER = 20
+    BASE_SPEED = 0.3
+    BASE_SPEED_MULTIPLIER = 40
   }
   else
   {
     Send s
+  }
+  Return
+}
+
+$s Up::
+{
+  BASE_SPEED = %DEFAULT_SPEED%
+  BASE_SPEED_MULTIPLIER = %DEFAULT_SPEED_MULTIPLIER%
+  Return
+}
+
+$x::
+{
+  if (canMoveMouse = "true") {
+
+  }
+  else
+  {
+    Send x
   }
   Return
 }
@@ -85,12 +107,6 @@ $v Up::
   Return
 }
 
-$s Up::
-{
-  BASE_SPEED = 1
-  BASE_SPEED_MULTIPLIER = 10
-  Return
-}
 
 $h::
 {
@@ -165,6 +181,11 @@ $j::
       {
         MouseMove, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
       }
+      else if (GetKeyState("x", "P"))
+      {
+        Click, WheelDown
+        Sleep, 50
+      }
       else
       {
         MouseMove, 0, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
@@ -181,27 +202,21 @@ $j::
 ; UP
 $k::
 {
-  if (canMoveMouse = "true")
-  {
+  if (canMoveMouse = "true") {
     isMovingMouse = true
-    While GetKeyState("k", "P")
-    {
-      if (GetKeyState("h", "P"))
-      {
+    While GetKeyState("k", "P") {
+      if (GetKeyState("h", "P")) { ; also move cursor left
         MouseMove, -%BASE_SPEED_MULTIPLIER%, -%BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
-      }
-      else if (GetKeyState("l", "P"))
-      {
+      } else if (GetKeyState("l", "P")) { ; also move cursor right
         MouseMove, %BASE_SPEED_MULTIPLIER%, -%BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
-      }
-      else
-      {
+      } else if (GetKeyState("x", "P")) { ; mousewheel
+        Click, WheelUp
+        Sleep, 50
+      } else { ; move cursor up
         MouseMove, 0, -%BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
       }
     }
-  }
-  else
-  {
+  } else {
     Send k
   }
   Return
@@ -209,7 +224,7 @@ $k::
 
 $d::
 {
-  if (A_PriorKey = "f") and (A_TimeSincePriorHotkey < 80) {
+  if (A_PriorKey = "k") and (A_TimeSincePriorHotkey < 80) {
     Send {BackSpace}
     canMoveMouse = true
     KeyWait, d
