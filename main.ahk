@@ -11,20 +11,29 @@ isMovingMouse = false
 canMoveMouse = false
 
 ; speed multiplier
+$r::
+{
+  if (canMoveMouse = "true") {
+    BASE_SPEED = 0.3
+    BASE_SPEED_MULTIPLIER = 5;
+  } else {
+    Send r
+  }
+  Return
+}
+
 $s::
 {
-  if (canMoveMouse = "true")
-  {
+  if (canMoveMouse = "true") {
     BASE_SPEED = 0.3
     BASE_SPEED_MULTIPLIER = 40
-  }
-  else
-  {
+  } else {
     Send s
   }
   Return
 }
 
+$r Up::
 $s Up::
 {
   BASE_SPEED = %DEFAULT_SPEED%
@@ -32,34 +41,19 @@ $s Up::
   Return
 }
 
-$x::
-{
-  if (canMoveMouse = "true") {
-
-  }
-  else
-  {
-    Send x
-  }
-  Return
-}
-
 $g::
 {
-  if (canMoveMouse = "true")
-  {
+  if (canMoveMouse = "true") {
     Click, down, middle
-  }
-  else
-  {
+  } else {
     Send g
   }
   Return
 }
+
 $g Up::
 {
-  if (canMoveMouse = "true")
-  {
+  if (canMoveMouse = "true") {
     Click, up, middle
   }
   Return
@@ -67,20 +61,16 @@ $g Up::
 
 $f::
 {
-  if (canMoveMouse = "true")
-  {
+  if (canMoveMouse = "true") {
     Click down
-  }
-  else
-  {
+  } else {
     Send f
   }
   Return
 }
 $f Up::
 {
-  if (GetKeyState("d", "P"))
-  {
+  if (GetKeyState("d", "P")) {
     Click up
   }
   Return
@@ -88,20 +78,16 @@ $f Up::
 
 $v::
 {
-  if (GetKeyState("d", "P"))
-  {
+  if (GetKeyState("d", "P")) {
     Click, down, right
-  }
-  else
-  {
+  } else {
     Send v
   }
   Return
 }
 $v Up::
 {
-  if (GetKeyState("d", "P"))
-  {
+  if (GetKeyState("d", "P")) {
     Click, up, right
   }
   Return
@@ -110,26 +96,18 @@ $v Up::
 
 $h::
 {
-  if (canMoveMouse = "true")
-  {
+  if (canMoveMouse = "true") {
     isMovingMouse = true
-    While GetKeyState("h", "P")
-    {
-      if (GetKeyState("j", "P"))
-      {
+    While GetKeyState("h", "P") {
+      if (GetKeyState("j", "P")) {
         MouseMove, -%BASE_SPEED_MULTIPLIER%, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
-      }
-      else if (GetKeyState("k", "P"))
-      {
+      } else if (GetKeyState("k", "P")) {
         MouseMove, -%BASE_SPEED_MULTIPLIER%, -%BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
-      }
-      else
-      {
+      } else {
         MouseMove, -%BASE_SPEED_MULTIPLIER%, 0, %BASE_SPEED%, R
       }
     }
-  }
-  else {
+  } else {
     Send h
   }
   Return
@@ -137,27 +115,18 @@ $h::
 
 $l::
 {
-
-  if (canMoveMouse = "true")
-  {
+  if (canMoveMouse = "true") {
     isMovingMouse = true
-    While GetKeyState("l", "P")
-    {
-      if (GetKeyState("j", "P"))
-      {
+    While GetKeyState("l", "P") {
+      if (GetKeyState("j", "P")) {
         MouseMove, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
-      }
-      else if (GetKeyState("k", "P"))
-      {
+      } else if (GetKeyState("k", "P")) {
         MouseMove, %BASE_SPEED_MULTIPLIER%, -%BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
-      }
-      else
-      {
+      } else {
         MouseMove, %BASE_SPEED_MULTIPLIER%, 0, %BASE_SPEED%, R
       }
     }
-  }
-  else {
+  } else {
     Send l
   }
   Return
@@ -166,34 +135,21 @@ $l::
 ; DOWN
 $j::
 {
-
-  ; if (GetKeyState("d", "P"))
-  if (canMoveMouse = "true")
-  {
+  if (canMoveMouse = "true") {
     isMovingMouse = true
-    While GetKeyState("j", "P")
-    {
-      if (GetKeyState("h", "P"))
-      {
+    While GetKeyState("j", "P") {
+      if (GetKeyState("h", "P")) {
         MouseMove, -%BASE_SPEED_MULTIPLIER%, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
-      }
-      else if (GetKeyState("l", "P"))
-      {
+      } else if (GetKeyState("l", "P")) {
         MouseMove, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
-      }
-      else if (GetKeyState("x", "P"))
-      {
+      } else if (GetKeyState("x", "P")) {
         Click, WheelDown
         Sleep, 50
-      }
-      else
-      {
+      } else {
         MouseMove, 0, %BASE_SPEED_MULTIPLIER%, %BASE_SPEED%, R
       }
     }
-  }
-  else
-  {
+  } else {
     Send j
   }
   Return
@@ -224,7 +180,7 @@ $k::
 
 $d::
 {
-  if (A_PriorKey = "k") and (A_TimeSincePriorHotkey < 80) {
+  if ((A_PriorKey = "f") or (A_PriorKey="k")) and (A_TimeSincePriorHotkey < 50) {
     Send {BackSpace}
     canMoveMouse = true
     KeyWait, d
@@ -233,8 +189,6 @@ $d::
   }
   Return
 }
-
-
 
 $d Up::
 {
